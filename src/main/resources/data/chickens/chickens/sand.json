@@ -1,0 +1,9 @@
+{
+  "name_key": "entity.chickens.sand.name",
+  "texture": "chickens:textures/entity/sand_chicken.png",
+  "bg_color": 15525297,
+  "fg_color": 10985580,
+  "lay_item": "minecraft:sand",
+  "lay_count": 1,
+  "spawn_type": "NORMAL"
+}

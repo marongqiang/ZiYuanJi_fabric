@@ -1,0 +1,11 @@
+{
+  "name_key": "entity.chickens.magma.name",
+  "texture": "chickens:textures/entity/magma_chicken.png",
+  "bg_color": 13257483,
+  "fg_color": 5349438,
+  "lay_item": "minecraft:magma_cream",
+  "lay_count": 1,
+  "spawn_type": "NONE",
+  "parent1": "chickens:slime",
+  "parent2": "chickens:blaze"
+}

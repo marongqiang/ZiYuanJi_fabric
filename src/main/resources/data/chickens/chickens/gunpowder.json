@@ -1,0 +1,11 @@
+{
+  "name_key": "entity.chickens.gunpowder.name",
+  "texture": "chickens:textures/entity/gunpowder_chicken.png",
+  "bg_color": 10066329,
+  "fg_color": 4210752,
+  "lay_item": "minecraft:gunpowder",
+  "lay_count": 1,
+  "spawn_type": "NORMAL",
+  "parent1": "chickens:sand",
+  "parent2": "chickens:flint"
+}

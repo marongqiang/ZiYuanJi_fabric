@@ -1,0 +1,11 @@
+{
+  "name_key": "entity.chickens.shulker_shell.name",
+  "texture": "chickens:textures/entity/shulker_shell_chicken.png",
+  "bg_color": 10079487,
+  "fg_color": 16777164,
+  "lay_item": "minecraft:shulker_shell",
+  "lay_count": 1,
+  "spawn_type": "NONE",
+  "parent1": "chickens:ender",
+  "parent2": "chickens:obsidian"
+}

@@ -1,0 +1,11 @@
+{
+  "name_key": "entity.chickens.lime.name",
+  "texture": "chickens:textures/entity/lime_chicken.png",
+  "bg_color": 8439583,
+  "fg_color": 15921906,
+  "lay_item": "minecraft:lime_dye",
+  "lay_count": 1,
+  "spawn_type": "NONE",
+  "parent1": "chickens:white",
+  "parent2": "chickens:green"
+}

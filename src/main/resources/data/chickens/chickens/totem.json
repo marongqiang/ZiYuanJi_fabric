@@ -1,0 +1,12 @@
+{
+  "name_key": "entity.chickens.totem.name",
+  "texture": "chickens:textures/entity/experience_chicken.png",
+  "bg_color": 15859978,
+  "fg_color": 7259722,
+  "lay_item": "minecraft:totem_of_undying",
+  "lay_count": 1,
+  "spawn_type": "NONE",
+  "parent1": "chickens:shulker_shell",
+  "parent2": "chickens:experience"
+}
+

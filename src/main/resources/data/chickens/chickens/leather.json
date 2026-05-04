@@ -1,0 +1,11 @@
+{
+  "name_key": "entity.chickens.leather.name",
+  "texture": "chickens:textures/entity/leather_chicken.png",
+  "bg_color": 10985580,
+  "fg_color": 9539985,
+  "lay_item": "minecraft:leather",
+  "lay_count": 1,
+  "spawn_type": "NONE",
+  "parent1": "chickens:string",
+  "parent2": "chickens:brown"
+}

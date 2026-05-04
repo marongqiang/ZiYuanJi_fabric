@@ -1,0 +1,10 @@
+{
+  "name_key": "entity.chickens.water.name",
+  "texture": "chickens:textures/entity/water_chicken.png",
+  "bg_color": 3390463,
+  "fg_color": 35020,
+  "lay_item": "chickens:liquid_egg",
+  "lay_count": 1,
+  "spawn_type": "NONE",
+  "lay_nbt": "{Liquid:\"minecraft:water\"}"
+}

@@ -1,0 +1,11 @@
+{
+  "name_key": "entity.chickens.purple.name",
+  "texture": "chickens:textures/entity/purple_chicken.png",
+  "bg_color": 8991416,
+  "fg_color": 15921906,
+  "lay_item": "minecraft:purple_dye",
+  "lay_count": 1,
+  "spawn_type": "NONE",
+  "parent1": "chickens:blue",
+  "parent2": "chickens:red"
+}

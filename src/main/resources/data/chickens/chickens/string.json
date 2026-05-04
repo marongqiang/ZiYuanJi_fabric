@@ -1,0 +1,13 @@
+{
+  "name_key": "entity.chickens.string.name",
+  "texture": "chickens:textures/entity/string_chicken.png",
+  "bg_color": 3348992,
+  "fg_color": 8388608,
+  "lay_item": "minecraft:string",
+  "lay_count": 1,
+  "spawn_type": "NORMAL",
+  "drop_item": "minecraft:spider_eye",
+  "drop_count": 1,
+  "parent1": "chickens:black",
+  "parent2": "chickens:log"
+}

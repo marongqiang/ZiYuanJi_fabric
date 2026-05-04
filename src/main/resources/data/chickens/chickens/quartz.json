@@ -1,0 +1,11 @@
+{
+  "name_key": "entity.chickens.quartz.name",
+  "texture": "chickens:textures/entity/quartz_chicken.png",
+  "bg_color": 5046272,
+  "fg_color": 1703936,
+  "lay_item": "minecraft:quartz",
+  "lay_count": 1,
+  "spawn_type": "NONE",
+  "parent1": "chickens:cobblestone",
+  "parent2": "chickens:white"
+}

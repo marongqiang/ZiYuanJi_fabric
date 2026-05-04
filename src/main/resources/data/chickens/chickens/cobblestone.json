@@ -1,0 +1,10 @@
+{
+  "name_key": "entity.chickens.cobblestone.name",
+  "texture": "chickens:textures/entity/cobblestone_chicken.png",
+  "bg_color": 11184810,
+  "fg_color": 6710886,
+  "lay_item": "minecraft:cobblestone",
+  "lay_count": 1,
+  "spawn_type": "NORMAL"
+}
+

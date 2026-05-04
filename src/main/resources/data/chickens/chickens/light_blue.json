@@ -1,0 +1,11 @@
+{
+  "name_key": "entity.chickens.light_blue.name",
+  "texture": "chickens:textures/entity/light_blue_chicken.png",
+  "bg_color": 3847130,
+  "fg_color": 15921906,
+  "lay_item": "minecraft:light_blue_dye",
+  "lay_count": 1,
+  "spawn_type": "NONE",
+  "parent1": "chickens:white",
+  "parent2": "chickens:blue"
+}

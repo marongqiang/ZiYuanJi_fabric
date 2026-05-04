@@ -1,0 +1,11 @@
+{
+  "name_key": "entity.chickens.ghast.name",
+  "texture": "chickens:textures/entity/ghast_chicken.png",
+  "bg_color": 16777164,
+  "fg_color": 16777215,
+  "lay_item": "minecraft:ghast_tear",
+  "lay_count": 1,
+  "spawn_type": "NONE",
+  "parent1": "chickens:white",
+  "parent2": "chickens:blaze"
+}

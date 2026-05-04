@@ -1,0 +1,12 @@
+{
+  "name_key": "entity.chickens.netherite.name",
+  "texture": "chickens:textures/entity/netherite_chicken.png",
+  "bg_color": 9799294,
+  "fg_color": 4267541,
+  "lay_item": "minecraft:netherite_scrap",
+  "lay_count": 1,
+  "spawn_type": "NONE",
+  "parent1": "chickens:deepslate",
+  "parent2": "chickens:obsidian"
+}
+

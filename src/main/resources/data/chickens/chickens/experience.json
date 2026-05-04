@@ -1,0 +1,11 @@
+{
+  "name_key": "entity.chickens.experience.name",
+  "texture": "chickens:textures/entity/experience_chicken.png",
+  "bg_color": 10079487,
+  "fg_color": 16777164,
+  "lay_item": "minecraft:experience_bottle",
+  "lay_count": 1,
+  "spawn_type": "NONE",
+  "parent1": "chickens:emerald",
+  "parent2": "chickens:ender"
+}

@@ -1,0 +1,11 @@
+{
+  "name_key": "entity.chickens.clay.name",
+  "texture": "chickens:textures/entity/clay_chicken.png",
+  "bg_color": 13421772,
+  "fg_color": 12566463,
+  "lay_item": "minecraft:clay_ball",
+  "lay_count": 1,
+  "spawn_type": "NONE",
+  "parent1": "chickens:snowball",
+  "parent2": "chickens:sand"
+}

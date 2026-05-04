@@ -1,0 +1,11 @@
+{
+  "name_key": "entity.chickens.glass.name",
+  "texture": "chickens:textures/entity/glass_chicken.png",
+  "bg_color": 16777215,
+  "fg_color": 15658751,
+  "lay_item": "minecraft:glass",
+  "lay_count": 1,
+  "spawn_type": "NONE",
+  "parent1": "chickens:quartz",
+  "parent2": "chickens:redstone"
+}

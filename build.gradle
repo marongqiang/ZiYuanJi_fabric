@@ -1,0 +1,192 @@
+plugins {
+	id 'fabric-loom' version '1.6-SNAPSHOT'
+	id 'maven-publish'
+}
+
+version = project.mod_version
+group = project.maven_group
+
+base {
+	archivesName = project.archives_base_name
+}
+
+repositories {
+	maven { url = "https://maven.fabricmc.net/" }
+	maven { url = "https://maven.terraformersmc.com/releases/" } // EMI
+	maven { url = "https://api.modrinth.com/maven" } // Jade (Fabric)
+}
+
+dependencies {
+	minecraft "com.mojang:minecraft:${project.minecraft_version}"
+	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+
+	// EMI
+	modCompileOnly "dev.emi:emi-fabric:${project.emi_version}:api"
+	modLocalRuntime "dev.emi:emi-fabric:${project.emi_version}"
+
+	// Jade (optional)
+	modCompileOnly "maven.modrinth:jade:${project.jade_version}"
+	modLocalRuntime "maven.modrinth:jade:${project.jade_version}"
+}
+
+loom {
+	splitEnvironmentSourceSets()
+
+	mods {
+		"chickens" {
+			sourceSet sourceSets.main
+			sourceSet sourceSets.client
+		}
+	}
+}
+
+tasks.withType(JavaCompile).configureEach {
+	it.options.release = 17
+}
+
+java {
+	withSourcesJar()
+	sourceCompatibility = JavaVersion.VERSION_17
+	targetCompatibility = JavaVersion.VERSION_17
+}
+
+def chickensDataRoot = layout.projectDirectory.dir("src/main/resources/data")
+
+def capturedChickenCapturedTexDir = layout.projectDirectory.dir("src/main/resources/assets/chickens/textures/item/captured")
+capturedChickenCapturedTexDir.asFile.mkdirs()
+
+// More Chickens 物品鸡贴图同源：textures/items/chicken/vanilla.png → Fabric 命名为 item（单数）路径
+def capturedChickenSilhouettePng = file("src/main/resources/assets/chickens/textures/item/chicken/vanilla.png")
+
+def capturedChickenAssetsOut = layout.buildDirectory.dir("generated/captured_chicken_assets")
+
+tasks.register('generateCapturedChickenAssets') {
+	description = '收容鸡 CustomModelData；物品图标与 More Chickens 同源 textures/item/chicken/vanilla.png；可选用 textures/item/captured/<id>.png 覆盖单种'
+	group = 'build'
+
+	inputs.dir(chickensDataRoot)
+	inputs.dir(capturedChickenCapturedTexDir)
+	outputs.dir(capturedChickenAssetsOut)
+
+	doLast {
+		def outAssets = capturedChickenAssetsOut.get().asFile
+		if (outAssets.exists()) {
+			outAssets.deleteDir()
+		}
+		outAssets.mkdirs()
+
+		def dataRoot = chickensDataRoot.asFile.toPath()
+		def capturedPngDir = capturedChickenCapturedTexDir.asFile
+		File silhouetteBaseFile = capturedChickenSilhouettePng as File
+		boolean hasSilhouetteBase = silhouetteBaseFile.exists()
+		def defaultLayerWhenNoSkin = hasSilhouetteBase ? 'chickens:item/chicken/vanilla' : 'minecraft:item/chicken'
+
+		Set<String> idStrings = new TreeSet<>()
+		// 仅鸡类型定义（与 ChickenTypeManager 路径一致），勿包含 chickens/recipes 等非实体 JSON，否则会打乱 CustomModelData 序号。
+		// JSON 内的 texture 字段只驱动世界实体，物品收容鸡沿用 More Chickens 式单层底板而非 entity 皮肤贴图。
+		fileTree(chickensDataRoot) {
+			include "**/chickens/chickens/**/*.json"
+		}.each { File f ->
+			def relPath = dataRoot.relativize(f.toPath()).normalize().toString().replace('\\', '/')
+			if (relPath.isEmpty()) return
+			String[] segments = relPath.split('/')
+			if (segments.length < 3) return
+			String ns = segments[0]
+			String remainderPath = segments.length > 1 ? segments[1..<(segments.length)].join('/') : ""
+			String pathForId = remainderPath.toLowerCase(java.util.Locale.ROOT)
+			if (!pathForId.endsWith(".json")) return
+			if (pathForId.startsWith("chickens/")) {
+				pathForId = pathForId.substring("chickens/".length())
+			}
+			pathForId = pathForId.substring(0, pathForId.length() - ".json".length())
+			if (pathForId.isEmpty()) return
+
+			idStrings.add(ns + ':' + pathForId)
+		}
+
+		// 必须位于 assets/<namespace>/…，否则会落到 resources 根的 chickens/…，客户端永远不加载模型
+		def modelsItem = new File(outAssets, "assets/chickens/models/item")
+		def modelsGenerated = new File(modelsItem, "captured/generated")
+		modelsGenerated.mkdirs()
+
+		def escapeModelFile = { String chickenId ->
+			String cleaned = chickenId.replace(':', "__").replace('/', "__")
+			if (cleaned.isEmpty()) return "_"
+			cleaned
+		}
+
+		def overrides = []
+
+		idStrings.eachWithIndex { fullId, idx ->
+			int cmd = (idx as int) + 1
+			def fc = fullId.indexOf(':')
+			String remainder = fc >= 0 ? fullId.substring(fc + 1) : fullId
+			String safeTex = remainder.replace('/', "__")
+			String modelStem = escapeModelFile(fullId)
+
+			File customPng = new File(capturedPngDir, safeTex + '.png')
+			String layer0 = defaultLayerWhenNoSkin
+			if (customPng.exists()) {
+				layer0 = 'chickens:item/captured/' + safeTex
+			}
+
+			def variantJson = """{
+  \"parent\": \"minecraft:item/generated\",
+  \"textures\": {
+    \"layer0\": \"${layer0}\"
+  }
+}
+"""
+			new File(modelsGenerated, modelStem + '.json').write(variantJson, 'UTF-8')
+
+			def overrideEntry = """    {
+      \"predicate\": { \"custom_model_data\": ${cmd} },
+      \"model\": \"chickens:item/captured/generated/${modelStem}\"
+    }"""
+			overrides << overrideEntry
+		}
+
+		def rootBase = """{
+  \"parent\": \"minecraft:item/generated\",
+  \"textures\": {
+    \"layer0\": \"${defaultLayerWhenNoSkin}\"
+  }"""
+		def rootSuffix = overrides.isEmpty()
+				? '\n}\n'
+				: """,
+  \"overrides\": [
+${overrides.join(",\n")}
+  ]
+}
+"""
+		new File(modelsItem, 'captured_chicken.json').write(rootBase + rootSuffix, 'UTF-8')
+	}
+}
+
+sourceSets {
+	main {
+		resources.srcDir(capturedChickenAssetsOut)
+	}
+}
+
+processResources {
+	inputs.property "version", project.version
+	dependsOn(generateCapturedChickenAssets)
+
+	filesMatching("fabric.mod.json") {
+		expand "version": project.version
+	}
+}
+
+publishing {
+	publications {
+		create("mavenJava", MavenPublication) {
+			artifactId = project.archives_base_name
+			from components.java
+		}
+	}
+	repositories { }
+}
+

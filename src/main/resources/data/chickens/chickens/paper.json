@@ -1,0 +1,11 @@
+{
+  "name_key": "entity.chickens.paper.name",
+  "texture": "chickens:textures/entity/paper_chicken.png",
+  "bg_color": 16777164,
+  "fg_color": 15790320,
+  "lay_item": "minecraft:paper",
+  "lay_count": 1,
+  "spawn_type": "NONE",
+  "parent1": "chickens:string",
+  "parent2": "chickens:white"
+}

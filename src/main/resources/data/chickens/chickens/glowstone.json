@@ -1,0 +1,11 @@
+{
+  "name_key": "entity.chickens.glowstone.name",
+  "texture": "chickens:textures/entity/glowstone_chicken.png",
+  "bg_color": 16505460,
+  "fg_color": 13403732,
+  "lay_item": "minecraft:glowstone_dust",
+  "lay_count": 1,
+  "spawn_type": "NONE",
+  "parent1": "chickens:quartz",
+  "parent2": "chickens:yellow"
+}

@@ -1,0 +1,11 @@
+{
+  "name_key": "entity.chickens.bone.name",
+  "texture": "chickens:textures/entity/bone_chicken.png",
+  "bg_color": 15921906,
+  "fg_color": 10329495,
+  "lay_item": "minecraft:bone",
+  "lay_count": 1,
+  "spawn_type": "HELL",
+  "parent1": "chickens:white",
+  "parent2": "chickens:ghast"
+}

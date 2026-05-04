@@ -1,0 +1,12 @@
+{
+  "name_key": "entity.chickens.nether_star.name",
+  "texture": "chickens:textures/entity/netherite_chicken.png",
+  "bg_color": 14474460,
+  "fg_color": 16777215,
+  "lay_item": "minecraft:nether_star",
+  "lay_count": 1,
+  "spawn_type": "NONE",
+  "parent1": "chickens:netherite",
+  "parent2": "chickens:ghast"
+}
+

@@ -1,0 +1,11 @@
+{
+  "name_key": "entity.chickens.netherwart.name",
+  "texture": "chickens:textures/entity/netherwart_chicken.png",
+  "bg_color": 8388608,
+  "fg_color": 3348992,
+  "lay_item": "minecraft:nether_wart",
+  "lay_count": 1,
+  "spawn_type": "NONE",
+  "parent1": "chickens:brown",
+  "parent2": "chickens:glowstone"
+}

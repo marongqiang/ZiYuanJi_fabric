@@ -1,0 +1,9 @@
+{
+  "name_key": "entity.chickens.warped_stem.name",
+  "texture": "chickens:textures/entity/warped_stem_chicken.png",
+  "bg_color": 9995373,
+  "fg_color": 5407576,
+  "lay_item": "minecraft:warped_stem",
+  "lay_count": 1,
+  "spawn_type": "NONE"
+}

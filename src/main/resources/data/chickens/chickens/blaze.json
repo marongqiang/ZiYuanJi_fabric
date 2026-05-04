@@ -1,0 +1,11 @@
+{
+  "name_key": "entity.chickens.blaze.name",
+  "texture": "chickens:textures/entity/blaze_chicken.png",
+  "bg_color": 16777062,
+  "fg_color": 16724736,
+  "lay_item": "minecraft:blaze_rod",
+  "lay_count": 1,
+  "spawn_type": "NONE",
+  "parent1": "chickens:gold",
+  "parent2": "chickens:lava"
+}

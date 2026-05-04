@@ -1,0 +1,12 @@
+{
+  "name_key": "entity.chickens.deepslate.name",
+  "texture": "chickens:textures/entity/deepslate_chicken.png",
+  "bg_color": 2500134,
+  "fg_color": 6710886,
+  "lay_item": "minecraft:deepslate",
+  "lay_count": 1,
+  "spawn_type": "NONE",
+  "parent1": "chickens:stone",
+  "parent2": "chickens:obsidian"
+}
+

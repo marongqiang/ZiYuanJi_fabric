@@ -1,0 +1,11 @@
+{
+  "name_key": "entity.chickens.iron.name",
+  "texture": "chickens:textures/entity/iron_chicken.png",
+  "bg_color": 16777164,
+  "fg_color": 16764108,
+  "lay_item": "minecraft:iron_ingot",
+  "lay_count": 1,
+  "spawn_type": "NONE",
+  "parent1": "chickens:flint",
+  "parent2": "chickens:white"
+}

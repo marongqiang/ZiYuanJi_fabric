@@ -1,0 +1,11 @@
+{
+  "name_key": "entity.chickens.black.name",
+  "texture": "chickens:textures/entity/black_chicken.png",
+  "bg_color": 1908001,
+  "fg_color": 15921906,
+  "lay_item": "minecraft:black_dye",
+  "lay_count": 1,
+  "spawn_type": "NONE",
+  "parent1": "chickens:coal",
+  "parent2": "chickens:white"
+}

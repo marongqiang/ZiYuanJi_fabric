@@ -1,0 +1,14 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "chickens:item/water_egg"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "chickens:liquid_variant": 1
+      },
+      "model": "chickens:item/liquid_egg_lava"
+    }
+  ]
+}

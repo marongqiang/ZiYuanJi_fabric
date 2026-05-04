@@ -1,0 +1,9 @@
+{
+  "name_key": "entity.chickens.stone.name",
+  "texture": "chickens:textures/entity/stone_chicken.png",
+  "bg_color": 12303291,
+  "fg_color": 7368816,
+  "lay_item": "minecraft:stone",
+  "lay_count": 1,
+  "spawn_type": "NONE"
+}

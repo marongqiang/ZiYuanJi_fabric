@@ -1,0 +1,12 @@
+{
+  "name_key": "entity.chickens.lava.name",
+  "texture": "chickens:textures/entity/lava_chicken.png",
+  "bg_color": 13257483,
+  "fg_color": 3155018,
+  "lay_item": "chickens:liquid_egg",
+  "lay_count": 1,
+  "spawn_type": "HELL",
+  "lay_nbt": "{Liquid:\"minecraft:lava\"}",
+  "parent1": "chickens:coal",
+  "parent2": "chickens:quartz"
+}

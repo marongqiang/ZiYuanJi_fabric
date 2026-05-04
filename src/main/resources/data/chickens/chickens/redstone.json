@@ -1,0 +1,11 @@
+{
+  "name_key": "entity.chickens.redstone.name",
+  "texture": "chickens:textures/entity/redstone_chicken.png",
+  "bg_color": 15073280,
+  "fg_color": 8388608,
+  "lay_item": "minecraft:redstone",
+  "lay_count": 1,
+  "spawn_type": "NONE",
+  "parent1": "chickens:red",
+  "parent2": "chickens:sand"
+}

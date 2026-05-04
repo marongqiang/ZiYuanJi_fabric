@@ -1,0 +1,9 @@
+{
+  "name_key": "entity.chickens.log.name",
+  "texture": "chickens:textures/entity/log_chicken.png",
+  "bg_color": 9995373,
+  "fg_color": 5407576,
+  "lay_item": "minecraft:oak_log",
+  "lay_count": 1,
+  "spawn_type": "NONE"
+}

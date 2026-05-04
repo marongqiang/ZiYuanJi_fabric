@@ -1,0 +1,9 @@
+{
+  "name_key": "entity.chickens.spruce_log.name",
+  "texture": "chickens:textures/entity/spruce_log_chicken.png",
+  "bg_color": 9995373,
+  "fg_color": 5407576,
+  "lay_item": "minecraft:spruce_log",
+  "lay_count": 1,
+  "spawn_type": "NONE"
+}

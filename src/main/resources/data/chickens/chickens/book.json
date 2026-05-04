@@ -1,0 +1,11 @@
+{
+  "name_key": "entity.chickens.book.name",
+  "texture": "chickens:textures/entity/book_chicken.png",
+  "bg_color": 16777164,
+  "fg_color": 10985580,
+  "lay_item": "minecraft:book",
+  "lay_count": 1,
+  "spawn_type": "NONE",
+  "parent1": "chickens:paper",
+  "parent2": "chickens:leather"
+}

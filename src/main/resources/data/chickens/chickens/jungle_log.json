@@ -1,0 +1,9 @@
+{
+  "name_key": "entity.chickens.jungle_log.name",
+  "texture": "chickens:textures/entity/jungle_log_chicken.png",
+  "bg_color": 9995373,
+  "fg_color": 5407576,
+  "lay_item": "minecraft:jungle_log",
+  "lay_count": 1,
+  "spawn_type": "NONE"
+}

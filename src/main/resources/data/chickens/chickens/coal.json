@@ -1,0 +1,11 @@
+{
+  "name_key": "entity.chickens.coal.name",
+  "texture": "chickens:textures/entity/coal_chicken.png",
+  "bg_color": 2500134,
+  "fg_color": 0,
+  "lay_item": "minecraft:coal",
+  "lay_count": 1,
+  "spawn_type": "NONE",
+  "parent1": "chickens:flint",
+  "parent2": "chickens:log"
+}

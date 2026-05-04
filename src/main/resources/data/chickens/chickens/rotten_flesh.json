@@ -1,0 +1,11 @@
+{
+  "name_key": "entity.chickens.rotten_flesh.name",
+  "texture": "chickens:textures/entity/rotten_flesh_chicken.png",
+  "bg_color": 5066061,
+  "fg_color": 9539985,
+  "lay_item": "minecraft:rotten_flesh",
+  "lay_count": 1,
+  "spawn_type": "NONE",
+  "parent1": "chickens:leather",
+  "parent2": "chickens:netherwart"
+}

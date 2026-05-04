@@ -1,0 +1,11 @@
+{
+  "name_key": "entity.chickens.slime.name",
+  "texture": "chickens:textures/entity/slime_chicken.png",
+  "bg_color": 39219,
+  "fg_color": 10092475,
+  "lay_item": "minecraft:slime_ball",
+  "lay_count": 1,
+  "spawn_type": "NONE",
+  "parent1": "chickens:green",
+  "parent2": "chickens:clay"
+}

@@ -1,0 +1,11 @@
+{
+  "name_key": "entity.chickens.diamond.name",
+  "texture": "chickens:textures/entity/diamond_chicken.png",
+  "bg_color": 10079487,
+  "fg_color": 15135487,
+  "lay_item": "minecraft:diamond",
+  "lay_count": 1,
+  "spawn_type": "NONE",
+  "parent1": "chickens:gold",
+  "parent2": "chickens:glass"
+}

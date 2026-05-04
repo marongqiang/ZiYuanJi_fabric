@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "id": "chickens",
+  "version": "${version}",
+  "name": "Chickens",
+  "description": "Chickens... lots of chickens. (Fabric 1.20.1 rewrite)",
+  "authors": [
+    "SetyCz",
+    "Wyvi",
+    "port-by-you"
+  ],
+  "contact": {
+    "sources": "https://minecraft.curseforge.com/projects/chickens"
+  },
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.setycz.chickens.ChickensFabricMod"
+    ],
+    "client": [
+      "com.setycz.chickens.client.ChickensFabricClient"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.15.0",
+    "minecraft": "1.20.1",
+    "fabric-api": "*"
+  },
+  "suggests": {
+    "emi": "*",
+    "jade": "*"
+  }
+}
+

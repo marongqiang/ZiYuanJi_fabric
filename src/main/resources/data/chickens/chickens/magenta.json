@@ -1,0 +1,11 @@
+{
+  "name_key": "entity.chickens.magenta.name",
+  "texture": "chickens:textures/entity/magenta_chicken.png",
+  "bg_color": 13061821,
+  "fg_color": 15921906,
+  "lay_item": "minecraft:magenta_dye",
+  "lay_count": 1,
+  "spawn_type": "NONE",
+  "parent1": "chickens:purple",
+  "parent2": "chickens:pink"
+}

@@ -1,0 +1,9 @@
+{
+  "name_key": "entity.chickens.yellow.name",
+  "texture": "chickens:textures/entity/yellow_chicken.png",
+  "bg_color": 16701501,
+  "fg_color": 15921906,
+  "lay_item": "minecraft:yellow_dye",
+  "lay_count": 1,
+  "spawn_type": "NONE"
+}

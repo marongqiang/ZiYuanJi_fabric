@@ -1,0 +1,11 @@
+{
+  "name_key": "entity.chickens.lapis.name",
+  "texture": "chickens:textures/entity/lapis_chicken.png",
+  "bg_color": 1594783,
+  "fg_color": 1594783,
+  "lay_item": "minecraft:lapis_lazuli",
+  "lay_count": 1,
+  "spawn_type": "NONE",
+  "parent1": "chickens:blue",
+  "parent2": "chickens:diamond"
+}

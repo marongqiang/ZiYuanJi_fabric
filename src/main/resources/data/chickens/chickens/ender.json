@@ -1,0 +1,11 @@
+{
+  "name_key": "entity.chickens.ender.name",
+  "texture": "chickens:textures/entity/ender_chicken.png",
+  "bg_color": 6656,
+  "fg_color": 6707,
+  "lay_item": "minecraft:ender_pearl",
+  "lay_count": 1,
+  "spawn_type": "NORMAL",
+  "parent1": "chickens:diamond",
+  "parent2": "chickens:netherwart"
+}

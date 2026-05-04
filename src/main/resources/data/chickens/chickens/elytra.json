@@ -1,0 +1,12 @@
+{
+  "name_key": "entity.chickens.elytra.name",
+  "texture": "chickens:textures/entity/ender_chicken.png",
+  "bg_color": 4276545,
+  "fg_color": 9868950,
+  "lay_item": "minecraft:elytra",
+  "lay_count": 1,
+  "spawn_type": "NONE",
+  "parent1": "chickens:shulker_shell",
+  "parent2": "chickens:ender"
+}
+

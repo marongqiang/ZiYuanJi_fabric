@@ -1,0 +1,11 @@
+{
+  "name_key": "entity.chickens.white.name",
+  "texture": "chickens:textures/entity/white_chicken.png",
+  "bg_color": 16383998,
+  "fg_color": 15921906,
+  "lay_item": "minecraft:white_dye",
+  "lay_count": 1,
+  "spawn_type": "NONE",
+  "drop_item": "minecraft:bone",
+  "drop_count": 1
+}

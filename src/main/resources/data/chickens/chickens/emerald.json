@@ -1,0 +1,11 @@
+{
+  "name_key": "entity.chickens.emerald.name",
+  "texture": "chickens:textures/entity/emerald_chicken.png",
+  "bg_color": 52224,
+  "fg_color": 13056,
+  "lay_item": "minecraft:emerald",
+  "lay_count": 1,
+  "spawn_type": "NONE",
+  "parent1": "chickens:green",
+  "parent2": "chickens:diamond"
+}

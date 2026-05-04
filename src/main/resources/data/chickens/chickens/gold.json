@@ -1,0 +1,11 @@
+{
+  "name_key": "entity.chickens.gold.name",
+  "texture": "chickens:textures/entity/gold_chicken.png",
+  "bg_color": 13421568,
+  "fg_color": 16777088,
+  "lay_item": "minecraft:gold_nugget",
+  "lay_count": 1,
+  "spawn_type": "NONE",
+  "parent1": "chickens:iron",
+  "parent2": "chickens:yellow"
+}

@@ -1,0 +1,11 @@
+{
+  "name_key": "entity.chickens.flint.name",
+  "texture": "chickens:textures/entity/flint_chicken.png",
+  "bg_color": 7039815,
+  "fg_color": 10724213,
+  "lay_item": "minecraft:flint",
+  "lay_count": 1,
+  "spawn_type": "NONE",
+  "parent1": "chickens:cobblestone",
+  "parent2": "chickens:sand"
+}
