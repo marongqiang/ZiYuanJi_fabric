@@ -20,6 +20,9 @@
     ],
     "client": [
       "com.setycz.chickens.client.ChickensFabricClient"
+    ],
+    "emi": [
+      "com.setycz.chickens.compat.emi.ChickensEmiPlugin"
     ]
   },
   "depends": {
@@ -29,7 +32,8 @@
   },
   "suggests": {
     "emi": "*",
-    "jade": "*"
+    "jade": "*",
+    "jei": "*"
   }
 }
 

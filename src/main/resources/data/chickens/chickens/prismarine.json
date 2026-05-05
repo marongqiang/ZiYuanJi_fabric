@@ -3,7 +3,7 @@
   "texture": "chickens:textures/entity/prismarine_chicken.png",
   "bg_color": 5138785,
   "fg_color": 14674396,
-  "lay_item": "minecraft:prismarine_shard",
+  "lay_item": "minecraft:sea_lantern",
   "lay_count": 1,
   "spawn_type": "NONE",
   "parent1": "chickens:emerald",

@@ -5,6 +5,7 @@ import com.setycz.chickens.data.ChickenTypes;
 import com.setycz.chickens.world.ChickenAttributeTicks;
 import com.setycz.chickens.world.ChickenUiContext;
 import com.setycz.chickens.registry.ModEntities;
+import com.setycz.chickens.registry.ModItems;
 import com.setycz.chickens.world.entity.ChickensChickenEntity;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.SpawnReason;
@@ -42,6 +43,27 @@ public final class CapturedChickenItem extends Item {
 		} else {
 			stack.getOrCreateNbt().remove("CustomModelData");
 		}
+	}
+
+	/**
+	 * 创造模式 / EMI 索引用：与成年鸡默认属性等价的 {@link ChickenSpawnEggItem#NBT_CAPTURE}，非游戏内击鸡掉落物。
+	 */
+	public static ItemStack createDisplayStack(Identifier typeId) {
+		ItemStack stack = new ItemStack(ModItems.CAPTURED_CHICKEN);
+		NbtCompound cap = new NbtCompound();
+		cap.putString("Type", typeId.toString());
+		cap.putInt("Growth", 1);
+		cap.putInt("Gain", 1);
+		cap.putInt("Strength", 1);
+		cap.putInt("EggTime", 20 * 60);
+		ChickenSpawnEggItem.writeCapture(stack, cap);
+		int cmd = CapturedChickenModelIndex.customModelData(typeId);
+		if (cmd > 0) {
+			stack.getOrCreateNbt().putInt("CustomModelData", cmd);
+		} else {
+			stack.getOrCreateNbt().remove("CustomModelData");
+		}
+		return stack;
 	}
 
 	private static Identifier readTypeFromCapture(ItemStack stack) {

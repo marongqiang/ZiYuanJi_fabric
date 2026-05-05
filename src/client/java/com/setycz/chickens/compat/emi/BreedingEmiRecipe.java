@@ -21,9 +21,10 @@ public final class BreedingEmiRecipe extends BasicEmiRecipe {
 			throw new IllegalArgumentException("Breeding recipe requires parents");
 		}
 
-		this.inputs.add(EmiStack.of(ChickensEmiPlugin.eggStack(p1)));
-		this.inputs.add(EmiStack.of(ChickensEmiPlugin.eggStack(p2)));
-		this.outputs.add(EmiStack.of(ChickensEmiPlugin.eggStack(type.id())));
+		// 繁殖以「收容鸡」代表实体鸡；用法键在收容鸡上查，不在刷怪蛋上
+		this.inputs.add(EmiStack.of(ChickensEmiPlugin.pocketStack(p1)));
+		this.inputs.add(EmiStack.of(ChickensEmiPlugin.pocketStack(p2)));
+		this.outputs.add(EmiStack.of(ChickensEmiPlugin.pocketStack(type.id())));
 	}
 
 	private static Identifier id(ChickenType type) {

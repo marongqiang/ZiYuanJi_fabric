@@ -45,7 +45,7 @@ CN_ITEM: dict[str, str] = {
 	"minecraft:experience_bottle": "附魔之瓶",
 	"minecraft:paper": "纸",
 	"minecraft:book": "书",
-	"minecraft:prismarine_shard": "海晶碎片",
+	"minecraft:sea_lantern": "海晶灯",
 	"minecraft:shulker_shell": "潜影壳",
 	"minecraft:magma_cream": "岩浆膏",
 	"minecraft:white_dye": "白色染料",

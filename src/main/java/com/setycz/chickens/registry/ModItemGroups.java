@@ -2,7 +2,7 @@ package com.setycz.chickens.registry;
 
 import com.setycz.chickens.ChickensFabricMod;
 import com.setycz.chickens.data.ChickenTypes;
-import com.setycz.chickens.world.item.ChickenSpawnEggItem;
+import com.setycz.chickens.world.item.CapturedChickenItem;
 import com.setycz.chickens.world.item.LiquidEggItem;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.minecraft.item.ItemGroup;
@@ -24,16 +24,21 @@ public final class ModItemGroups {
 					.entries((context, entries) -> {
 						entries.add(new ItemStack(ModItems.CHICKEN_CATCHER));
 
-						// Stone chain spawn eggs (furnace upgrade path)
+						// 石链：专用蛋与收容展示紧挨成对（若只把蛋放栏首、收容仍走无序循环，收容会排到很后页，像「没有」）
 						entries.add(new ItemStack(ModItems.COBBLESTONE_CHICKEN_SPAWN_EGG));
+						entries.add(CapturedChickenItem.createDisplayStack(ChickensFabricMod.id("cobblestone")));
 						entries.add(new ItemStack(ModItems.STONE_CHICKEN_SPAWN_EGG));
+						entries.add(CapturedChickenItem.createDisplayStack(ChickensFabricMod.id("stone")));
 						entries.add(new ItemStack(ModItems.SMOOTH_STONE_CHICKEN_SPAWN_EGG));
+						entries.add(CapturedChickenItem.createDisplayStack(ChickensFabricMod.id("smooth_stone")));
 
-						// Spawn eggs for all loaded chicken types
+						// 其余鸡：刷怪蛋 + 收容展示；石链三种已在上面成对列出，此处跳过以免重复
 						for (var type : ChickenTypes.all()) {
-							ItemStack egg = new ItemStack(ModItems.SPAWN_EGG);
-							ChickenSpawnEggItem.writeType(egg, type.id());
-							entries.add(egg);
+							if (ModItems.CHICKEN_TYPES_WITH_FIXED_SPAWN_EGG.contains(type.id())) {
+								continue;
+							}
+							entries.add(ModItems.spawnEggStackForChickenType(type.id()));
+							entries.add(CapturedChickenItem.createDisplayStack(type.id()));
 						}
 
 						ItemStack waterEgg = new ItemStack(ModItems.LIQUID_EGG);

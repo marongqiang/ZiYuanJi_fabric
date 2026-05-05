@@ -88,6 +88,7 @@ public final class ChickenSpawnEggItem extends Item {
 	public static void writeType(ItemStack stack, Identifier type) {
 		NbtCompound nbt = stack.getOrCreateNbt();
 		nbt.putString(NBT_CHICKEN_TYPE, type.toString());
+		nbt.remove("CustomModelData");
 	}
 
 	public static void writeCapture(ItemStack stack, NbtCompound capture) {

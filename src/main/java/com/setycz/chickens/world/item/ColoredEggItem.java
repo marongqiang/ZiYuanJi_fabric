@@ -64,5 +64,6 @@ public final class ColoredEggItem extends Item {
 	public static void writeType(ItemStack stack, Identifier type) {
 		NbtCompound nbt = stack.getOrCreateNbt();
 		nbt.putString(NBT_CHICKEN_TYPE, type.toString());
+		nbt.remove("CustomModelData");
 	}
 }

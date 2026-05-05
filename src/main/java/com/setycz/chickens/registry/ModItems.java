@@ -9,12 +9,39 @@ import com.setycz.chickens.world.item.FixedChickenSpawnEggItem;
 import com.setycz.chickens.world.item.LiquidEggItem;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.item.Items;
+import net.minecraft.util.Identifier;
+
+import java.util.Set;
 
 public final class ModItems {
 	private ModItems() {}
+
+	/** 圆石 / 石头 / 平滑石鸡使用专用刷怪蛋物品，与通用 {@link #SPAWN_EGG} 区分 */
+	public static final Set<Identifier> CHICKEN_TYPES_WITH_FIXED_SPAWN_EGG = Set.of(
+			ChickensFabricMod.id("cobblestone"),
+			ChickensFabricMod.id("stone"),
+			ChickensFabricMod.id("smooth_stone")
+	);
+
+	/** 创造栏 / EMI 下蛋配方：石链用专用蛋，其余用带 {@code Type} 的通用蛋 */
+	public static ItemStack spawnEggStackForChickenType(Identifier typeId) {
+		if (typeId.equals(ChickensFabricMod.id("cobblestone"))) {
+			return new ItemStack(COBBLESTONE_CHICKEN_SPAWN_EGG);
+		}
+		if (typeId.equals(ChickensFabricMod.id("stone"))) {
+			return new ItemStack(STONE_CHICKEN_SPAWN_EGG);
+		}
+		if (typeId.equals(ChickensFabricMod.id("smooth_stone"))) {
+			return new ItemStack(SMOOTH_STONE_CHICKEN_SPAWN_EGG);
+		}
+		ItemStack stack = new ItemStack(SPAWN_EGG);
+		ChickenSpawnEggItem.writeType(stack, typeId);
+		return stack;
+	}
 
 	public static final Item CHICKEN_CATCHER = Registry.register(
 			Registries.ITEM,
