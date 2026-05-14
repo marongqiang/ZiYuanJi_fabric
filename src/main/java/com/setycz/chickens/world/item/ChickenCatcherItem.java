@@ -78,12 +78,9 @@ public final class ChickenCatcherItem extends Item {
 		if (chicken.isBaby()) {
 			world.playSound(user, chicken.getBlockPos(), SoundEvents.ENTITY_CHICKEN_HURT, SoundCategory.NEUTRAL, 1.0F, 1.0F);
 			if (!user.isCreative()) {
-				if (user instanceof ServerPlayerEntity sp) {
-					stack.damage(1, sp, p -> p.sendToolBreakStatus(hand));
-				} else {
-					stack.damage(1, user, p -> p.sendToolBreakStatus(hand));
-				}
+				damageTool(stack, user, hand);
 			}
+			user.sendMessage(Text.translatable("message.chickens.catcher.baby"), true);
 			return ActionResult.SUCCESS;
 		}
 
@@ -98,12 +95,16 @@ public final class ChickenCatcherItem extends Item {
 		chicken.discard();
 
 		if (!user.isCreative()) {
-			if (user instanceof ServerPlayerEntity sp) {
-				stack.damage(1, sp, p -> p.sendToolBreakStatus(hand));
-			} else {
-				stack.damage(1, user, p -> p.sendToolBreakStatus(hand));
-			}
+			damageTool(stack, user, hand);
 		}
 		return ActionResult.SUCCESS;
+	}
+
+	private static void damageTool(ItemStack stack, PlayerEntity user, Hand hand) {
+		if (user instanceof ServerPlayerEntity sp) {
+			stack.damage(1, sp, p -> p.sendToolBreakStatus(hand));
+		} else {
+			stack.damage(1, user, p -> p.sendToolBreakStatus(hand));
+		}
 	}
 }

@@ -1,0 +1,8 @@
+{
+  "name_key": "entity.chickens.dirt.name",
+  "texture": "minecraft:textures/entity/chicken.png",
+  "bg_color": 10133650,
+  "fg_color": 6447462,
+  "lay_item": "minecraft:dirt",
+  "spawn_type": "NONE"
+}

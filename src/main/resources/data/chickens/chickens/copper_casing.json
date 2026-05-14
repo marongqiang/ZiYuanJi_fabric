@@ -1,0 +1,10 @@
+{
+  "name_key": "entity.chickens.copper_casing.name",
+  "texture": "chickens:textures/entity/copper_casing_chicken.png",
+  "bg_color": 16744576,
+  "fg_color": 15435844,
+  "lay_item": "create:copper_casing",
+  "spawn_type": "NONE",
+  "parent1": "chickens:copper",
+  "parent2": "chickens:log"
+}

@@ -4,10 +4,10 @@ import com.setycz.chickens.data.ChickenType;
 import com.setycz.chickens.data.ChickenTypes;
 import com.setycz.chickens.data.SpawnType;
 import com.setycz.chickens.world.ChickenAttributeTicks;
-import com.setycz.chickens.world.blockentity.HenhouseBlockEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.SpawnReason;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
@@ -18,7 +18,6 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
@@ -44,11 +43,19 @@ public final class ChickensChickenEntity extends ChickenEntity {
 	private static final String NBT_WATER_TEACH = "WaterTeach";
 	private static final String NBT_TOTEM_TEACH = "TotemTeach";
 	private static final String NBT_STAR_TEACH = "StarTeach";
+	private static final String NBT_LOG_TEACH = "LogTeach";
+	private static final String NBT_LOG_TEACH_TARGET = "LogTeachTarget";
+	private static final String NBT_DYE_TEACH = "DyeTeach";
+	private static final String NBT_DYE_TEACH_TARGET = "DyeTeachTarget";
 
 	private int timeUntilNextEgg = 20 * 60;
 	private int waterTeach = 0;
 	private int totemTeach = 0;
 	private int starTeach = 0;
+	private int logTeach = 0;
+	@Nullable private Identifier logTeachTarget = null;
+	private int dyeTeach = 0;
+	@Nullable private Identifier dyeTeachTarget = null;
 
 	public ChickensChickenEntity(EntityType<? extends ChickenEntity> type, World world) {
 		super(type, world);
@@ -94,6 +101,38 @@ public final class ChickensChickenEntity extends ChickenEntity {
 
 	public void setStarTeach(int starTeach) {
 		this.starTeach = Math.max(0, starTeach);
+	}
+
+	public int getLogTeach() {
+		return logTeach;
+	}
+
+	public void setLogTeach(int logTeach) {
+		this.logTeach = Math.max(0, logTeach);
+	}
+
+	public @Nullable Identifier getLogTeachTarget() {
+		return logTeachTarget;
+	}
+
+	public void setLogTeachTarget(@Nullable Identifier target) {
+		this.logTeachTarget = target;
+	}
+
+	public int getDyeTeach() {
+		return dyeTeach;
+	}
+
+	public void setDyeTeach(int dyeTeach) {
+		this.dyeTeach = Math.max(0, dyeTeach);
+	}
+
+	public @Nullable Identifier getDyeTeachTarget() {
+		return dyeTeachTarget;
+	}
+
+	public void setDyeTeachTarget(@Nullable Identifier target) {
+		this.dyeTeachTarget = target;
 	}
 
 	@Override
@@ -195,11 +234,11 @@ public final class ChickensChickenEntity extends ChickenEntity {
 
 	private void layEggs() {
 		ItemStack item = getChickenType().layItem().copy();
-		if (item.isEmpty()) return;
-
-		ItemStack rest = HenhouseBlockEntity.pushItemStack(item, getWorld(), new Vec3d(getX(), getY(), getZ()), 5);
-		if (!rest.isEmpty()) {
-			dropStack(rest);
+		if (!item.isEmpty()) {
+			dropStack(item);
+		}
+		if (getChickenTypeId().equals(ChickenTypes.smartId())) {
+			dropStack(new ItemStack(net.minecraft.item.Items.FEATHER));
 		}
 	}
 
@@ -276,6 +315,18 @@ public final class ChickensChickenEntity extends ChickenEntity {
 		if (starTeach > 0) {
 			nbt.putInt(NBT_STAR_TEACH, starTeach);
 		}
+		if (logTeach > 0) {
+			nbt.putInt(NBT_LOG_TEACH, logTeach);
+		}
+		if (logTeachTarget != null) {
+			nbt.putString(NBT_LOG_TEACH_TARGET, logTeachTarget.toString());
+		}
+		if (dyeTeach > 0) {
+			nbt.putInt(NBT_DYE_TEACH, dyeTeach);
+		}
+		if (dyeTeachTarget != null) {
+			nbt.putString(NBT_DYE_TEACH_TARGET, dyeTeachTarget.toString());
+		}
 	}
 
 	@Override
@@ -293,6 +344,18 @@ public final class ChickensChickenEntity extends ChickenEntity {
 		waterTeach = Math.max(0, nbt.getInt(NBT_WATER_TEACH));
 		totemTeach = Math.max(0, nbt.getInt(NBT_TOTEM_TEACH));
 		starTeach = Math.max(0, nbt.getInt(NBT_STAR_TEACH));
+		logTeach = Math.max(0, nbt.getInt(NBT_LOG_TEACH));
+		if (nbt.contains(NBT_LOG_TEACH_TARGET)) {
+			logTeachTarget = new Identifier(nbt.getString(NBT_LOG_TEACH_TARGET));
+		} else {
+			logTeachTarget = null;
+		}
+		dyeTeach = Math.max(0, nbt.getInt(NBT_DYE_TEACH));
+		if (nbt.contains(NBT_DYE_TEACH_TARGET)) {
+			dyeTeachTarget = new Identifier(nbt.getString(NBT_DYE_TEACH_TARGET));
+		} else {
+			dyeTeachTarget = null;
+		}
 		dataTracker.set(TRACKED_EGG_MINUTES, Math.max(0, timeUntilNextEgg / (20 * 60)));
 		dataTracker.set(TRACKED_LAY_TICKS, Math.max(0, timeUntilNextEgg));
 		if (!isBaby() && nbt.contains(NBT_BREED_COOLDOWN)) {
@@ -326,5 +389,14 @@ public final class ChickensChickenEntity extends ChickenEntity {
 			return SpawnType.SNOW;
 		}
 		return SpawnType.NORMAL;
+	}
+
+	@Override
+	protected void dropLoot(DamageSource source, boolean causedByPlayer) {
+		super.dropLoot(source, causedByPlayer);
+		ItemStack drop = getChickenType().dropItem().copy();
+		if (!drop.isEmpty()) {
+			this.dropStack(drop);
+		}
 	}
 }

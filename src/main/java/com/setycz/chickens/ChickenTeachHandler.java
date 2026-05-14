@@ -12,6 +12,7 @@ import net.minecraft.item.Items;
 import net.minecraft.potion.PotionUtil;
 import net.minecraft.potion.Potions;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
@@ -19,10 +20,11 @@ import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 
 public final class ChickenTeachHandler {
-	private static final int DYES_REQUIRED = 10;
 	private static final int WATER_BOTTLES_REQUIRED = 3;
 	private static final int TOTEMS_REQUIRED = 3;
 	private static final int STARS_REQUIRED = 3;
+	private static final int LOGS_REQUIRED = 10;
+	private static final int DYE_STEPS_REQUIRED = 10;
 
 	private ChickenTeachHandler() {}
 
@@ -82,6 +84,9 @@ public final class ChickenTeachHandler {
 						chicken.setWaterTeach(0);
 						chicken.setChickenTypeId(ChickensFabricMod.id("water"));
 						chicken.playSpawnEffects();
+					} else {
+						player.sendMessage(Text.translatable("message.chickens.teach.progress",
+								Text.translatable("message.chickens.teach.water"), taught, WATER_BOTTLES_REQUIRED), true);
 					}
 					return ActionResult.SUCCESS;
 				}
@@ -102,6 +107,9 @@ public final class ChickenTeachHandler {
 						chicken.setTotemTeach(0);
 						chicken.setChickenTypeId(ChickensFabricMod.id("totem"));
 						chicken.playSpawnEffects();
+					} else {
+						player.sendMessage(Text.translatable("message.chickens.teach.progress",
+								Text.translatable("message.chickens.teach.totem"), taught, TOTEMS_REQUIRED), true);
 					}
 					return ActionResult.SUCCESS;
 				}
@@ -122,26 +130,73 @@ public final class ChickenTeachHandler {
 						chicken.setStarTeach(0);
 						chicken.setChickenTypeId(ChickensFabricMod.id("nether_star"));
 						chicken.playSpawnEffects();
+					} else {
+						player.sendMessage(Text.translatable("message.chickens.teach.progress",
+								Text.translatable("message.chickens.teach.star"), taught, STARS_REQUIRED), true);
 					}
 					return ActionResult.SUCCESS;
 				}
+
+				// log / stem training: 3x same log type -> corresponding wood chicken
+				Identifier logTarget = logToChickenType(held.getItem());
+				if (logTarget != null
+						&& entity instanceof ChickensChickenEntity chicken
+						&& chicken.getChickenTypeId().equals(ChickenTypes.smartId())) {
+					if (world.isClient) {
+						return ActionResult.SUCCESS;
+					}
+					if (!player.isCreative()) {
+						held.decrement(1);
+					}
+					Identifier currentTarget = chicken.getLogTeachTarget();
+					if (currentTarget != null && !currentTarget.equals(logTarget)) {
+						chicken.setLogTeach(0);
+					}
+					chicken.setLogTeachTarget(logTarget);
+					int taught = chicken.getLogTeach() + 1;
+					chicken.setLogTeach(taught);
+					if (taught >= LOGS_REQUIRED) {
+						chicken.setLogTeach(0);
+						chicken.setLogTeachTarget(null);
+						chicken.setChickenTypeId(logTarget);
+						chicken.playSpawnEffects();
+					} else {
+						player.sendMessage(Text.translatable("message.chickens.teach.progress",
+								Text.translatable(ChickenTypes.getOrDefault(logTarget).nameKey()),
+								taught, LOGS_REQUIRED), true);
+					}
+					return ActionResult.SUCCESS;
+				}
+
 				return ActionResult.PASS;
 			}
 			if (!(entity instanceof ChickensChickenEntity chicken) || !chicken.getChickenTypeId().equals(ChickenTypes.smartId())) {
 				return ActionResult.PASS;
 			}
+			// dye / snowball training: 10x same item -> corresponding chicken
 			if (world.isClient) {
 				return ActionResult.SUCCESS;
 			}
-			if (held.getCount() < DYES_REQUIRED) {
-				return ActionResult.FAIL;
-			}
-
 			if (!player.isCreative()) {
-				held.decrement(DYES_REQUIRED);
+				held.decrement(1);
 			}
-			chicken.setChickenTypeId(targetType);
-			chicken.playSpawnEffects();
+			Identifier currentDyeTarget = chicken.getDyeTeachTarget();
+			if (currentDyeTarget != null && !currentDyeTarget.equals(targetType)) {
+				chicken.setDyeTeach(0);
+			}
+			chicken.setDyeTeachTarget(targetType);
+			int taught = chicken.getDyeTeach() + 1;
+			chicken.setDyeTeach(taught);
+			if (taught >= DYE_STEPS_REQUIRED) {
+				chicken.setDyeTeach(0);
+				chicken.setDyeTeachTarget(null);
+				chicken.setChickenTypeId(targetType);
+				chicken.playSpawnEffects();
+			} else {
+				player.sendMessage(Text.translatable("message.chickens.teach.progress",
+						Text.translatable(ChickenTypes.getOrDefault(targetType).nameKey()),
+						taught, DYE_STEPS_REQUIRED), true);
+			}
 			return ActionResult.SUCCESS;
 		});
 	}
@@ -154,6 +209,11 @@ public final class ChickenTeachHandler {
 		if (item == Items.BLACK_DYE) return ChickensFabricMod.id("black");
 		if (item == Items.YELLOW_DYE) return ChickensFabricMod.id("yellow");
 		if (item == Items.SNOWBALL) return ChickensFabricMod.id("snowball");
+		if (item == Items.DIRT) return ChickensFabricMod.id("dirt");
+		return null;
+	}
+
+	private static @Nullable Identifier logToChickenType(Item item) {
 		if (item == Items.OAK_LOG) return ChickensFabricMod.id("log");
 		if (item == Items.SPRUCE_LOG) return ChickensFabricMod.id("spruce_log");
 		if (item == Items.BIRCH_LOG) return ChickensFabricMod.id("birch_log");

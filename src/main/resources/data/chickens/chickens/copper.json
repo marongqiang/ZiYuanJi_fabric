@@ -1,0 +1,10 @@
+{
+  "name_key": "entity.chickens.copper.name",
+  "texture": "chickens:textures/entity/copper_chicken.png",
+  "bg_color": 15435844,
+  "fg_color": 16743268,
+  "lay_item": "minecraft:copper_ingot",
+  "spawn_type": "NONE",
+  "parent1": "chickens:redstone",
+  "parent2": "chickens:clay"
+}

@@ -1,0 +1,10 @@
+{
+  "name_key": "entity.chickens.gravel.name",
+  "texture": "minecraft:textures/entity/chicken.png",
+  "bg_color": 8289918,
+  "fg_color": 6447462,
+  "lay_item": "minecraft:gravel",
+  "spawn_type": "NONE",
+  "parent1": "chickens:cobblestone",
+  "parent2": "chickens:flint"
+}

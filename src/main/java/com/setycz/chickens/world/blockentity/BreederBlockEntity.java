@@ -1,5 +1,6 @@
 package com.setycz.chickens.world.blockentity;
 
+import com.setycz.chickens.ChickensFabricMod;
 import com.setycz.chickens.data.ChickenTypes;
 import com.setycz.chickens.registry.ModBlockEntities;
 import com.setycz.chickens.world.ChickenAttributeTicks;
@@ -14,9 +15,11 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.SidedInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
@@ -38,7 +41,7 @@ import java.util.List;
 /**
  * GUI：第一行 0–3 为收容鸡（未满时选属性最高的一对繁殖，子代放入空位）；任一只在交配冷却内则不繁殖。交配冷却结束后若种子与空位满足则当 tick 即尝试繁殖（对齐原版「冷却好就能配」）。爱心进度仅反映该对两只的交配冷却完成度（取慢的一侧）。
  * 0–3 全满且非四只均为满属性（Growth/Gain/Strength 等级均为 10）时，选属性最低的两只转为刷怪蛋放入 4–5；四只均为满属性时不淘汰、不消耗繁殖计时。
- * 三项属性含义：Growth 幼体长成速度、Gain 下蛋间隔、Strength 繁殖交配冷却（与 {@link ChickenAttributeTicks} 一致）。第二行种子区繁殖时扣 2 粒小麦种子。
+ * 三项属性含义：Growth 幼体长成速度、Gain 下蛋间隔、Strength 繁殖交配冷却（与 {@link ChickenAttributeTicks} 一致）。繁殖时扣 2 份燃料。
  */
 public final class BreederBlockEntity extends BlockEntity implements NamedScreenHandlerFactory, ImplementedInventory, SidedInventory {
 	public static final int SLOT_CHICKEN_1 = 0;
@@ -54,8 +57,8 @@ public final class BreederBlockEntity extends BlockEntity implements NamedScreen
 	public static final int SEED_SLOT_COUNT = SLOT_SEEDS_LAST - SLOT_SEEDS_FIRST + 1;
 	public static final int INVENTORY_SIZE = SLOT_SEEDS_LAST + 1;
 
-	private static final String NBT_GUI_LAYOUT = "BreederGuiV2";
 
+	public static final TagKey<Item> BREEDER_FUEL = TagKey.of(RegistryKeys.ITEM, ChickensFabricMod.id("breeder_fuel"));
 	public static final int PROGRESS_MAX = 1000;
 
 	private final DefaultedList<ItemStack> items = DefaultedList.ofSize(INVENTORY_SIZE, ItemStack.EMPTY);
@@ -211,7 +214,7 @@ public final class BreederBlockEntity extends BlockEntity implements NamedScreen
 	}
 
 	private boolean canBreedAccumulate() {
-		if (countWheatSeedsTotal() < 2) {
+		if (countBreederFuel() < 2) {
 			return false;
 		}
 		if (countValidChickensInRow() < 2 || !hasEmptyChickenSlot()) {
@@ -474,7 +477,7 @@ public final class BreederBlockEntity extends BlockEntity implements NamedScreen
 	}
 
 	private boolean tryBreedIntoEmptyRowSlot(ServerWorld serverWorld) {
-		if (countWheatSeedsTotal() < 2 || !hasEmptyChickenSlot()) {
+		if (countBreederFuel() < 2 || !hasEmptyChickenSlot()) {
 			return false;
 		}
 		BreedPair pair = pickBestBreedPair(true);
@@ -489,7 +492,7 @@ public final class BreederBlockEntity extends BlockEntity implements NamedScreen
 		}
 		applyBreedCooldownToSlot(pair.slotA);
 		applyBreedCooldownToSlot(pair.slotB);
-		consumeWheatSeeds(2);
+		consumeBreederFuel(2);
 		world.playSound(null, pos, SoundEvents.ENTITY_CHICKEN_EGG, SoundCategory.BLOCKS, 1.0F, world.random.nextFloat() * 0.2F + 0.95F);
 		markDirty();
 		return true;
@@ -542,23 +545,23 @@ public final class BreederBlockEntity extends BlockEntity implements NamedScreen
 		return stack.isEmpty();
 	}
 
-	private int countWheatSeedsTotal() {
+	private int countBreederFuel() {
 		int n = 0;
 		for (int s = SLOT_SEEDS_FIRST; s <= SLOT_SEEDS_LAST; s++) {
 			ItemStack st = getStack(s);
-			if (st.isOf(Items.WHEAT_SEEDS)) {
+			if (st.isIn(BREEDER_FUEL)) {
 				n += st.getCount();
 			}
 		}
 		return n;
 	}
 
-	/** 按槽位顺序从 {@link #SLOT_SEEDS_FIRST} 起扣减小麦种子。 */
-	private void consumeWheatSeeds(int amount) {
+	/** 按槽位顺序从 {@link #SLOT_SEEDS_FIRST} 起扣除燃料。 */
+	private void consumeBreederFuel(int amount) {
 		int rem = amount;
 		for (int s = SLOT_SEEDS_FIRST; s <= SLOT_SEEDS_LAST && rem > 0; s++) {
 			ItemStack st = getStack(s);
-			if (!st.isOf(Items.WHEAT_SEEDS)) continue;
+			if (!st.isIn(BREEDER_FUEL)) continue;
 			int take = Math.min(rem, st.getCount());
 			st.decrement(take);
 			rem -= take;
@@ -584,9 +587,6 @@ public final class BreederBlockEntity extends BlockEntity implements NamedScreen
 	@Override
 	public void markDirty() {
 		super.markDirty();
-		if (world != null) {
-			world.updateListeners(pos, getCachedState(), getCachedState(), 3);
-		}
 	}
 
 	@Override
@@ -611,7 +611,7 @@ public final class BreederBlockEntity extends BlockEntity implements NamedScreen
 		return dir == Direction.UP
 				&& slot >= SLOT_SEEDS_FIRST
 				&& slot <= SLOT_SEEDS_LAST
-				&& stack.isOf(Items.WHEAT_SEEDS);
+				&& stack.isIn(BREEDER_FUEL);
 	}
 
 	@Override
@@ -623,47 +623,11 @@ public final class BreederBlockEntity extends BlockEntity implements NamedScreen
 	protected void writeNbt(NbtCompound nbt) {
 		super.writeNbt(nbt);
 		writeInventory(nbt);
-		nbt.putBoolean(NBT_GUI_LAYOUT, true);
 	}
 
 	@Override
 	public void readNbt(NbtCompound nbt) {
 		super.readNbt(nbt);
 		readInventory(nbt);
-		if (!nbt.getBoolean(NBT_GUI_LAYOUT)) {
-			migrateLegacyInventoryLayout();
-		}
-	}
-
-	/**
-	 * 旧版槽位：0 种子、1–4 产出、5–6 繁殖鸡 → 新版 0–1 繁殖、2–5 产出、6–10 种子（迁移时种子进首格）。
-	 */
-	private void migrateLegacyInventoryLayout() {
-		ItemStack s0 = getStack(0);
-		ItemStack s1 = getStack(1);
-		ItemStack s5 = getStack(5);
-		ItemStack s6 = getStack(6);
-		// 旧版：0=种子，1–4=产出，5–6=繁殖鸡；新版：0–1=鸡，2–5=产出，6–10=种子
-		boolean looksLegacy = s0.isOf(Items.WHEAT_SEEDS)
-				&& !(s1.getItem() instanceof CapturedChickenItem)
-				&& (s5.getItem() instanceof CapturedChickenItem || s6.getItem() instanceof CapturedChickenItem);
-		if (!looksLegacy) {
-			return;
-		}
-		DefaultedList<ItemStack> old = DefaultedList.ofSize(INVENTORY_SIZE, ItemStack.EMPTY);
-		for (int i = 0; i < INVENTORY_SIZE; i++) {
-			old.set(i, getStack(i).copy());
-		}
-		for (int i = 0; i < INVENTORY_SIZE; i++) {
-			setStack(i, ItemStack.EMPTY);
-		}
-		setStack(SLOT_SEEDS_FIRST, old.get(0));
-		setStack(SLOT_NEXT_FIRST, old.get(1));
-		setStack(SLOT_NEXT_LAST, old.get(2));
-		setStack(SLOT_EGG_FIRST, old.get(3));
-		setStack(SLOT_EGG_LAST, old.get(4));
-		setStack(SLOT_CHICKEN_1, old.get(5));
-		setStack(SLOT_CHICKEN_2, old.get(6));
-		markDirty();
 	}
 }

@@ -1,0 +1,10 @@
+{
+  "name_key": "entity.chickens.soul_sand.name",
+  "texture": "minecraft:textures/entity/chicken.png",
+  "bg_color": 4539683,
+  "fg_color": 2236962,
+  "lay_item": "minecraft:soul_sand",
+  "spawn_type": "NONE",
+  "parent1": "chickens:sand",
+  "parent2": "chickens:netherwart"
+}

@@ -1,0 +1,10 @@
+{
+  "name_key": "entity.chickens.sail_frame.name",
+  "texture": "chickens:textures/entity/sail_frame_chicken.png",
+  "bg_color": 16383998,
+  "fg_color": 14869218,
+  "lay_item": "create:sail_frame",
+  "spawn_type": "NONE",
+  "parent1": "chickens:string",
+  "parent2": "chickens:log"
+}

@@ -9,7 +9,6 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.screen.ArrayPropertyDelegate;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
@@ -97,7 +96,7 @@ public final class BreederScreenHandler extends ScreenHandler {
 				return ItemStack.EMPTY;
 			}
 		} else {
-			if (original.isOf(Items.WHEAT_SEEDS)) {
+			if (original.isIn(BreederBlockEntity.BREEDER_FUEL)) {
 				if (!this.insertItem(original, BreederBlockEntity.SLOT_SEEDS_FIRST, BreederBlockEntity.SLOT_SEEDS_LAST + 1, false)) {
 					return ItemStack.EMPTY;
 				}
@@ -125,7 +124,7 @@ public final class BreederScreenHandler extends ScreenHandler {
 
 		@Override
 		public boolean canInsert(ItemStack stack) {
-			return stack.isOf(Items.WHEAT_SEEDS);
+			return stack.isIn(BreederBlockEntity.BREEDER_FUEL);
 		}
 	}
 

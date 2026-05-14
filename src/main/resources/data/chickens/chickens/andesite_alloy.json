@@ -1,0 +1,10 @@
+{
+  "name_key": "entity.chickens.andesite_alloy.name",
+  "texture": "chickens:textures/entity/andesite_alloy_chicken.png",
+  "bg_color": 5263440,
+  "fg_color": 10526880,
+  "lay_item": "create:andesite_alloy",
+  "spawn_type": "NONE",
+  "parent1": "chickens:andesite",
+  "parent2": "chickens:iron"
+}

@@ -1,0 +1,10 @@
+{
+  "name_key": "entity.chickens.grass_block.name",
+  "texture": "minecraft:textures/entity/chicken.png",
+  "bg_color": 7845416,
+  "fg_color": 4352309,
+  "lay_item": "minecraft:grass_block",
+  "spawn_type": "NONE",
+  "parent1": "chickens:dirt",
+  "parent2": "chickens:log"
+}

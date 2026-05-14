@@ -1,0 +1,10 @@
+{
+  "name_key": "entity.chickens.enchanted_golden_apple.name",
+  "texture": "minecraft:textures/entity/chicken.png",
+  "bg_color": 16766720,
+  "fg_color": 16711680,
+  "lay_item": "minecraft:enchanted_golden_apple",
+  "spawn_type": "NONE",
+  "parent1": "chickens:gold",
+  "parent2": "chickens:experience"
+}

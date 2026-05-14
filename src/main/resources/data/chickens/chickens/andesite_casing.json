@@ -1,0 +1,10 @@
+{
+  "name_key": "entity.chickens.andesite_casing.name",
+  "texture": "chickens:textures/entity/andesite_casing_chicken.png",
+  "bg_color": 6381921,
+  "fg_color": 10526880,
+  "lay_item": "create:andesite_casing",
+  "spawn_type": "NONE",
+  "parent1": "chickens:andesite_alloy",
+  "parent2": "chickens:log"
+}

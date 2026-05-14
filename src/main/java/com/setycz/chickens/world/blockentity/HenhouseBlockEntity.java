@@ -22,14 +22,9 @@ import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
 
 /**
  * 左侧 3×3（{@value #CHICKEN_SLOT_COUNT}）格收容鸡 → 右侧 3×3 产出区；GUI 中为两格网加中央箭头样式。
@@ -193,32 +188,6 @@ public final class HenhouseBlockEntity extends BlockEntity implements NamedScree
 		return ChickenAttributeTicks.nextLayCooldownTicks(random, gain);
 	}
 
-	/** 附近实体鸡产蛋时仍可优先送入本鸡舍产出区 */
-	public static ItemStack pushItemStack(ItemStack input, World world, Vec3d pos, int radius) {
-		if (input.isEmpty()) return ItemStack.EMPTY;
-		List<HenhouseBlockEntity> henhouses = findHenhouses(world, pos, radius);
-		ItemStack rest = input;
-		for (HenhouseBlockEntity henhouse : henhouses) {
-			rest = henhouse.insertIntoOutputs(rest);
-			if (rest.isEmpty()) break;
-		}
-		return rest;
-	}
-
-	private static List<HenhouseBlockEntity> findHenhouses(World world, Vec3d pos, int radius) {
-		BlockPos center = BlockPos.ofFloored(pos);
-		BlockPos min = center.add(-radius, -radius, -radius);
-		BlockPos max = center.add(radius, radius, radius);
-		List<HenhouseBlockEntity> result = new ArrayList<>();
-		BlockPos.iterate(min, max).forEach(p -> {
-			if (world.getBlockEntity(p) instanceof HenhouseBlockEntity be) {
-				result.add(be);
-			}
-		});
-		result.sort(Comparator.comparingDouble(be -> be.getPos().getSquaredDistance(pos.x, pos.y, pos.z)));
-		return result;
-	}
-
 	private ItemStack insertIntoOutputs(ItemStack stack) {
 		if (stack.isEmpty()) return ItemStack.EMPTY;
 		ItemStack remaining = stack.copy();
@@ -300,9 +269,6 @@ public final class HenhouseBlockEntity extends BlockEntity implements NamedScree
 	@Override
 	public void markDirty() {
 		super.markDirty();
-		if (world != null) {
-			world.updateListeners(pos, getCachedState(), getCachedState(), 3);
-		}
 	}
 
 	@Override

@@ -1,10 +1,8 @@
 package com.setycz.chickens.data;
 
 import com.setycz.chickens.ChickensFabricMod;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 
 import org.jetbrains.annotations.Nullable;
@@ -28,11 +26,63 @@ public final class ChickenTypes {
 			ChickensFabricMod.id("warped_stem")
 	);
 
+	private static final Map<Identifier, Integer> TIER_CACHE = new HashMap<>();
+	private static final Map<SpawnType, List<ChickenType>> SPAWN_CACHE = new HashMap<>();
+	private static final Map<String, List<Identifier>> CHILDREN_CACHE = new HashMap<>();
+
 	public static void setAll(Map<Identifier, ChickenType> newTypes) {
 		TYPES.clear();
 		TYPES.putAll(newTypes);
+
+		// 预计算所有层级（含循环检测）
+		TIER_CACHE.clear();
+		Set<Identifier> visiting = new HashSet<>();
+		for (Identifier id : TYPES.keySet()) {
+			computeTier(id, visiting);
+		}
+
+		// 预计算自然生成候选
+		SPAWN_CACHE.clear();
+		for (SpawnType st : SpawnType.values()) {
+			List<ChickenType> list = new ArrayList<>();
+			for (ChickenType type : TYPES.values()) {
+				if (type.canSpawnNaturally() && type.spawnType() == st) {
+					list.add(type);
+				}
+			}
+			list.sort(Comparator.comparing(type -> type.id().toString()));
+			SPAWN_CACHE.put(st, Collections.unmodifiableList(list));
+		}
+
+		// 繁殖子代索引按需延迟计算；此处仅清空
+		CHILDREN_CACHE.clear();
+
 		CapturedChickenModelIndex.rebuild(TYPES.values());
 		ChickensFabricMod.LOGGER.info("已加载鸡类型：{}", TYPES.size());
+	}
+
+	private static int computeTier(Identifier id, Set<Identifier> visiting) {
+		Integer cached = TIER_CACHE.get(id);
+		if (cached != null) return cached;
+
+		ChickenType t = TYPES.get(id);
+		if (t == null || t.isBase()) {
+			TIER_CACHE.put(id, 1);
+			return 1;
+		}
+
+		if (!visiting.add(id)) {
+			ChickensFabricMod.LOGGER.warn("鸡类型循环父系引用，已截断为 tier 1：{}", id);
+			TIER_CACHE.put(id, 1);
+			return 1;
+		}
+
+		int tier = 1 + Math.max(
+				computeTier(t.parent1(), visiting),
+				computeTier(t.parent2(), visiting));
+		visiting.remove(id);
+		TIER_CACHE.put(id, tier);
+		return tier;
 	}
 
 	public static Collection<ChickenType> all() {
@@ -74,9 +124,7 @@ public final class ChickenTypes {
 	}
 
 	public static int tierOf(Identifier id) {
-		ChickenType t = TYPES.get(id);
-		if (t == null || t.isBase()) return 1;
-		return 1 + Math.max(tierOf(t.parent1()), tierOf(t.parent2()));
+		return TIER_CACHE.getOrDefault(id, 1);
 	}
 
 	public static float childChancePercent(Identifier child) {
@@ -113,13 +161,22 @@ public final class ChickenTypes {
 	}
 
 	private static List<Identifier> childrenAndParents(Identifier parent1, Identifier parent2) {
-		List<Identifier> result = new ArrayList<>();
-		if (TYPES.containsKey(parent1)) result.add(parent1);
-		if (TYPES.containsKey(parent2)) result.add(parent2);
-		for (ChickenType t : TYPES.values()) {
-			if (isChildOf(t, parent1, parent2)) result.add(t.id());
-		}
-		return result;
+		String key = parentKey(parent1, parent2);
+		return CHILDREN_CACHE.computeIfAbsent(key, k -> {
+			List<Identifier> result = new ArrayList<>();
+			if (TYPES.containsKey(parent1)) result.add(parent1);
+			if (TYPES.containsKey(parent2)) result.add(parent2);
+			for (ChickenType t : TYPES.values()) {
+				if (isChildOf(t, parent1, parent2)) result.add(t.id());
+			}
+			return result;
+		});
+	}
+
+	private static String parentKey(Identifier p1, Identifier p2) {
+		String a = p1.toString();
+		String b = p2.toString();
+		return a.compareTo(b) <= 0 ? a + "|" + b : b + "|" + a;
 	}
 
 	private static boolean isChildOf(ChickenType type, Identifier parent1, Identifier parent2) {
@@ -150,40 +207,9 @@ public final class ChickenTypes {
 	}
 
 	public static List<ChickenType> getSpawnCandidates(SpawnType spawnType) {
-		List<ChickenType> result = new ArrayList<>();
-		for (ChickenType type : TYPES.values()) {
-			if (type.canSpawnNaturally() && type.spawnType() == spawnType) {
-				result.add(type);
-			}
-		}
-		result.sort(Comparator.comparing(type -> type.id().toString()));
-		return result;
+		List<ChickenType> cached = SPAWN_CACHE.get(spawnType);
+		return cached != null ? cached : Collections.emptyList();
 	}
 
-	public static boolean isDyeChicken(ChickenType type) {
-		Item item = type.layItem().getItem();
-		Identifier itemId = Registries.ITEM.getId(item);
-		return itemId != null && itemId.getPath().endsWith("_dye");
-	}
-
-	public static List<ChickenType> getDyeChickens() {
-		List<ChickenType> result = new ArrayList<>();
-		for (ChickenType type : TYPES.values()) {
-			if (isDyeChicken(type)) {
-				result.add(type);
-			}
-		}
-		result.sort(Comparator.comparing(type -> type.id().toString()));
-		return result;
-	}
-
-	public static @Nullable ChickenType findByLayItem(Item item) {
-		for (ChickenType type : TYPES.values()) {
-			if (type.layItem().getItem() == item) {
-				return type;
-			}
-		}
-		return null;
-	}
 }
 

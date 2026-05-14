@@ -1,0 +1,10 @@
+{
+  "name_key": "entity.chickens.moss_block.name",
+  "texture": "minecraft:textures/entity/chicken.png",
+  "bg_color": 6198370,
+  "fg_color": 3430368,
+  "lay_item": "minecraft:moss_block",
+  "spawn_type": "NONE",
+  "parent1": "chickens:grass_block",
+  "parent2": "chickens:water"
+}

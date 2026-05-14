@@ -1,0 +1,10 @@
+{
+  "name_key": "entity.chickens.shaft.name",
+  "texture": "chickens:textures/entity/shaft_chicken.png",
+  "bg_color": 11513775,
+  "fg_color": 13882323,
+  "lay_item": "create:shaft",
+  "spawn_type": "NONE",
+  "parent1": "chickens:andesite_alloy",
+  "parent2": "chickens:iron"
+}

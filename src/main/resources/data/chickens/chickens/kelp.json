@@ -1,0 +1,10 @@
+{
+  "name_key": "entity.chickens.kelp.name",
+  "texture": "minecraft:textures/entity/chicken.png",
+  "bg_color": 5531457,
+  "fg_color": 3568741,
+  "lay_item": "minecraft:kelp",
+  "spawn_type": "NONE",
+  "parent1": "chickens:water",
+  "parent2": "chickens:dirt"
+}

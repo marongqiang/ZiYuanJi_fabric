@@ -1,0 +1,10 @@
+{
+  "name_key": "entity.chickens.andesite.name",
+  "texture": "chickens:textures/entity/andesite_chicken.png",
+  "bg_color": 8421504,
+  "fg_color": 10526880,
+  "lay_item": "minecraft:andesite",
+  "spawn_type": "NONE",
+  "parent1": "chickens:stone",
+  "parent2": "chickens:quartz"
+}

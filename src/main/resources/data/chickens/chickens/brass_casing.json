@@ -1,0 +1,10 @@
+{
+  "name_key": "entity.chickens.brass_casing.name",
+  "texture": "chickens:textures/entity/brass_casing_chicken.png",
+  "bg_color": 16766720,
+  "fg_color": 16351261,
+  "lay_item": "create:brass_casing",
+  "spawn_type": "NONE",
+  "parent1": "chickens:brass",
+  "parent2": "chickens:log"
+}

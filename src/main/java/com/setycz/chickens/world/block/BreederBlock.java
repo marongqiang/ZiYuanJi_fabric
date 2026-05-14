@@ -69,19 +69,19 @@ public final class BreederBlock extends BlockWithEntity {
 
 		ItemStack held = player.getStackInHand(hand);
 
-		if (!held.isEmpty()) {
-			if (held.getItem() instanceof CapturedChickenItem && canAcceptCapture(held)) {
-				if (!player.isSneaking()) {
-					for (int s = BreederBlockEntity.SLOT_CHICKEN_1; s <= BreederBlockEntity.SLOT_NEXT_LAST; s++) {
-						if (breeder.getStack(s).isEmpty()) {
-							breeder.setStack(s, held.split(1));
-							return ActionResult.CONSUME;
-						}
-					}
+		// 手持收容鸡且非潜行：尝试放入繁殖箱空位
+		if (!held.isEmpty() && !player.isSneaking()
+				&& held.getItem() instanceof CapturedChickenItem && canAcceptCapture(held)) {
+			for (int s = BreederBlockEntity.SLOT_CHICKEN_1; s <= BreederBlockEntity.SLOT_NEXT_LAST; s++) {
+				if (breeder.getStack(s).isEmpty()) {
+					breeder.setStack(s, held.split(1));
+					return ActionResult.CONSUME;
 				}
-				return ActionResult.CONSUME;
 			}
-		} else if (player.isSneaking()) {
+		}
+
+		// 空手且潜行：从繁殖箱取出收容鸡
+		if (held.isEmpty() && player.isSneaking()) {
 			for (int s = BreederBlockEntity.SLOT_NEXT_LAST; s >= BreederBlockEntity.SLOT_CHICKEN_1; s--) {
 				ItemStack st = breeder.getStack(s);
 				if (!st.isEmpty()) {

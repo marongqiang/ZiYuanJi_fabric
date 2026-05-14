@@ -19,7 +19,7 @@ public record ChickenType(
 		@Nullable Identifier parent2
 ) {
 	public boolean isBase() {
-		return parent1 == null || parent2 == null;
+		return parent1 == null && parent2 == null;
 	}
 
 	public boolean canSpawnNaturally() {

@@ -1,0 +1,10 @@
+{
+  "name_key": "entity.chickens.precision_mechanism.name",
+  "texture": "chickens:textures/entity/precision_mechanism_chicken.png",
+  "bg_color": 16766720,
+  "fg_color": 16777130,
+  "lay_item": "create:precision_mechanism",
+  "spawn_type": "NONE",
+  "parent1": "chickens:brass",
+  "parent2": "chickens:gold"
+}

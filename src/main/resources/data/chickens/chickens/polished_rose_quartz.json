@@ -1,0 +1,10 @@
+{
+  "name_key": "entity.chickens.polished_rose_quartz.name",
+  "texture": "chickens:textures/entity/polished_rose_quartz_chicken.png",
+  "bg_color": 16743168,
+  "fg_color": 16711680,
+  "lay_item": "create:polished_rose_quartz",
+  "spawn_type": "NONE",
+  "parent1": "chickens:quartz",
+  "parent2": "chickens:redstone"
+}

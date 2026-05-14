@@ -117,5 +117,5 @@ public final class BreederGuiSlotNudge {
 
 	/** 填充掩模相对几何中心的微调（相对当前：左为负 dx，下为正 dy） */
 	public static final int BREEDER_HEART_FILL_OFFSET_DX = -2;
-	public static final int BREEDER_HEART_FILL_OFFSET_DY = 0;
+	public static final int BREEDER_HEART_FILL_OFFSET_DY = -1;
 }
